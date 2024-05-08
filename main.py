@@ -14,13 +14,17 @@ class PrefixTree:
 
     def insert_words(self, words_arr):
         [self.insert_word(word) for word in words_arr]
+
+    def reset_tree(self):
+        self.head = TreeNode()
+
     def insert_word(self, word_to_add):
         curr = self.head
         word_array = word_to_add.split('/')
         for word in word_array:
-                if word not in curr.children:
-                    curr.children[word] = TreeNode()
-                curr = curr.children[word]
+            if word not in curr.children:
+                curr.children[word] = TreeNode()
+            curr = curr.children[word]
 
     def get_all_words(self):
         results = []
@@ -38,21 +42,39 @@ class PrefixTree:
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
     print(f'Hi, {name}')
-    prefix_tree = PrefixTree()
 
-    prefix_tree.insert_word("abc")
-    prefix_tree.insert_word("abc/def")
-    prefix_tree.insert_word("abca")
-    prefix_tree.insert_word("abc/def/ghi")
-    prefix_tree.insert_word("abc/def/ghi")
-    prefix_tree.insert_word("abc/def/ghi")
-    prefix_tree.insert_word("abc/def/ghi/jkl")
-    prefix_tree.insert_word("abc/def/ghijkl/jkl")
-    prefix_tree.insert_word("def")
-    print(prefix_tree.get_all_words())
+
+def test_trie_work_as_expected(prefixes, expected_results):
+    prefix_tree = PrefixTree()
+    prefix_tree.insert_words(prefixes)
+    assert prefix_tree.get_all_words() == expected_results
+
+
+def test_interview_example():
+    prefixes = ["abc", "abc/def", "abca", "abc/def/ghi", "abc/def/ghi", "abc/def/ghi/jkl", "abc/def/ghijkl/jkl", "def"]
+    expected_result = ['def', 'abca', 'abc/def/ghijkl/jkl', 'abc/def/ghi/jkl']
+    test_trie_work_as_expected(prefixes, expected_result)
+
+
+def test_duplicates_prefixes_return_only_one():
+    prefixes = ["abc/def/ghi", "abc/def/ghi"]
+    expected_result = ["abc/def/ghi"]
+    test_trie_work_as_expected(prefixes, expected_result)
+
+
+def test_no_overlapping_prefixes():
+    prefixes = ["abc","def","ghp","hca/def/abc/ghp"]
+    expected_result = ['hca/def/abc/ghp', 'ghp', 'def', 'abc']
+    test_trie_work_as_expected(prefixes, expected_result)
+
+def test_empty():
+    prefixes = []
+    expected_result = []
+    test_trie_work_as_expected(prefixes, expected_result)
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
+    test_interview_example()
+    test_duplicates_prefixes_return_only_one()
+    test_no_overlapping_prefixes()
