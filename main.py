@@ -29,6 +29,8 @@ class PrefixTree:
     def get_all_words(self):
         results = []
         stack = [(self.head, "")]
+        if not self.head.children:
+            return results
         while stack:
             node, prefix = stack.pop()
             if len(node.children) == 0:
@@ -63,9 +65,10 @@ def test_duplicates_prefixes_return_only_one():
 
 
 def test_no_overlapping_prefixes():
-    prefixes = ["abc","def","ghp","hca/def/abc/ghp"]
+    prefixes = ["abc", "def", "ghp", "hca/def/abc/ghp"]
     expected_result = ['hca/def/abc/ghp', 'ghp', 'def', 'abc']
     test_trie_work_as_expected(prefixes, expected_result)
+
 
 def test_empty():
     prefixes = []
@@ -78,3 +81,4 @@ if __name__ == '__main__':
     test_interview_example()
     test_duplicates_prefixes_return_only_one()
     test_no_overlapping_prefixes()
+    test_empty()
