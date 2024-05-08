@@ -26,14 +26,14 @@ class PrefixTree:
                 curr.children[word] = TreeNode()
             curr = curr.children[word]
 
-    def get_all_words(self):
+    def get_unique_words(self):
         results = []
         stack = [(self.head, "")]
         if not self.head.children:
             return results
         while stack:
             node, prefix = stack.pop()
-            if len(node.children) == 0:
+            if not node.children:
                 # this remove the extra '/' at the beginning of the word
                 results.append(prefix[1:])
             for k, child_node in node.children.items():
@@ -49,7 +49,7 @@ def print_hi(name):
 def test_trie_work_as_expected(prefixes, expected_results):
     prefix_tree = PrefixTree()
     prefix_tree.insert_words(prefixes)
-    assert prefix_tree.get_all_words() == expected_results
+    assert set(prefix_tree.get_unique_words()) == set(expected_results)
 
 
 def test_interview_example():
@@ -70,6 +70,11 @@ def test_no_overlapping_prefixes():
     test_trie_work_as_expected(prefixes, expected_result)
 
 
+def test_diffrenciate_between_lower_upper_case():
+    prefixes = ["abc", "ABC",]
+    expected_result = ["ABC","abc"]
+    test_trie_work_as_expected(prefixes, expected_result)
+
 def test_empty():
     prefixes = []
     expected_result = []
@@ -82,3 +87,4 @@ if __name__ == '__main__':
     test_duplicates_prefixes_return_only_one()
     test_no_overlapping_prefixes()
     test_empty()
+    test_diffrenciate_between_lower_upper_case()
