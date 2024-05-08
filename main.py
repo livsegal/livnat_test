@@ -41,11 +41,6 @@ class PrefixTree:
         return results
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')
-
-
 def test_trie_work_as_expected(prefixes, expected_results):
     prefix_tree = PrefixTree()
     prefix_tree.insert_words(prefixes)
@@ -71,9 +66,10 @@ def test_no_overlapping_prefixes():
 
 
 def test_diffrenciate_between_lower_upper_case():
-    prefixes = ["abc", "ABC",]
-    expected_result = ["ABC","abc"]
+    prefixes = ["abc", "ABC", ]
+    expected_result = ["ABC", "abc"]
     test_trie_work_as_expected(prefixes, expected_result)
+
 
 def test_empty():
     prefixes = []
